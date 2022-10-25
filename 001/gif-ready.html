@@ -1,0 +1,26 @@
+<!doctype HTML>
+<html>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<script src="js-last/aframe.min.js"></script>
+<script src="js-last/aframe-ar.js"></script>
+<script src="js-last/aframe-gif-shader.min.js"></script>
+<body style="margin: 0px; overflow: hidden;">
+  
+<a-scene embedded vr-mode-ui="enabled: false;" arjs="debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
+
+    <a-assets>
+        <img id="kotik-gif" src="images/kotik.gif" />
+    </a-assets>
+
+    <a-marker type="barcode" value="2">
+        <a-plane position="0 0 0" 
+                 rotation="-90 0 0"
+               material="src: #kotik-gif;shader:gif;">
+        </a-plane>
+    </a-marker>
+    
+    <a-entity camera></a-entity>
+    
+</a-scene>
+</body>
+</html>
