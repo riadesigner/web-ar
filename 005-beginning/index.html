@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="js/aframe.min.js"></script>	
+</head>
+<body>
+
+
+<a-scene>
+	<a-assets>
+		<img id="kotik" src="./i/cat.png">
+		<img id="ocean" src="./i/ocean.jpg">		
+	</a-assets>
+
+	<a-box 
+		scale="1 1 1" 
+		material="src: #kotik;" 
+		rotation="0 -45 0" 
+		position="0 0 0"
+		animation="property: rotation; to: -359 -45 0; dur: 4000; loop: true;"
+	></a-box>	
+
+	<a-entity rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">	        
+	        <a-sphere scale="0.5 0.5 0.5" color="gold"  position="2 2 0"></a-sphere>
+	</a-entity>
+
+	<a-sky  material="src:#ocean;color:navy;" 
+		animation="property:rotation; to:0 -360 0; loop:true; easing:linear; dur: 30000; "></a-sky>
+	
+	<a-camera position="0 1.5 4"></a-camera>
+
+</a-scene>>
+
+
+</body>
+</html>
