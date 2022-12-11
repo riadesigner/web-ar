@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+<style>
+	
+body{background: gray;}
+canvas{border:1px solid gold;}
+
+</style>	
+
+</head>
+<body>
+
+
+<video id='video' style="visibility: hidden;height: 1px;width:1px;" src="img/test-vid.mp4" loop autoplay muted></video>
+
+
+<script>
+	
+
+var canvas = document.createElement('canvas');	
+document.body.appendChild(canvas);
+canvas.width = 1200;
+canvas.height = 600;
+var ctx = canvas.getContext('2d',{ willReadFrequently: true });
+var video  = document.getElementById('video');
+
+video.addEventListener('play', function () {
+    var _this = this; 
+    (function loop() {
+        if (!_this.paused && !_this.ended) {
+            ctx.drawImage(_this, 0, 0,canvas.width,canvas.height);
+            var  frame = ctx.getImageData(0, 0,canvas.width,canvas.height);            
+            for(var i =0;i<frame.data.length;i+=4){
+            	var r = frame.data[i];	
+            	var g = frame.data[i+1];	
+            	var b = frame.data[i+2];	            	
+                if(g>160){
+                    frame.data[i+3] = 0 // alpha                    
+                }                
+
+            }
+            ctx.putImageData(frame,0,0);	        
+            requestAnimationFrame(loop);
+            // setTimeout(loop, 1000 / 30); // drawing at 30fps
+        }
+    })();
+}, 0);
+
+
+
+
+</script>
+
+
+</body>
+</html>

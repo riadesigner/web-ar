@@ -5,18 +5,17 @@ var Site = {
 		THREEx.ArToolkitContext.baseURL = '';
 		this.onRenderFcts = [];
 		// this.lastTimeMsec;
-		this.build_scene();		
-		// this.build_test_plane();
-		this.build_test_chromakey();
+		this.build_scene();
 		// this.build_elements();
-		// this.build_test_animation();
-		// this.build_test_video();
-
+		this.build_test();
 		this.toolkit_ar_init();
 		this.behaviors();
 		this.loop_animate();
 	},	
 	build_scene:function() {
+
+	 	// const canvas = document.querySelector('#c');
+	  	// const renderer = new THREE.WebGLRenderer({canvas});
 
 		this.renderer = new THREE.WebGLRenderer({
 			antialias: true,
@@ -35,70 +34,7 @@ var Site = {
 			this.renderer.render(this.scene, this.camera);
 		})		
 	},
-	build_test_video:function() {
-			
-	},
-	build_test_chromakey:function() {
-
-			var cnv = document.createElement('canvas');
-			var ctx = cnv.getContext('2d',{ willReadFrequently: true });
-			cnv.width = 256;
-			cnv.height = 256;			
-			ctx.fillStyle = '#FF0000';
-			ctx.fillRect(0, 0, cnv.width, cnv.height);
-			document.body.appendChild(cnv);
-
-			var video  = document.getElementById('video');			
-			video.addEventListener('play', function () {
-			    var vid = this; 
-			    (function loop() {
-			        if (!vid.paused && !vid.ended) {
-			            ctx.drawImage(vid, 0, 0,cnv.width,cnv.height);			            
-			            var  frame = ctx.getImageData(0, 0,cnv.width,cnv.height);
-			            for(var i =0;i<frame.data.length;i+=4){
-			            	var r = frame.data[i];	
-			            	var g = frame.data[i+1];	
-			            	var b = frame.data[i+2];	            	
-										if(g>160){											
-									   	frame.data[i+3] = 0;
-									  }
-			            }
-			            ctx.putImageData(frame,0,0);				        
-			            requestAnimationFrame(loop);
-			            // setTimeout(loop, 1000 / 30); // drawing at 30fps
-			        }
-			    })();
-			}, 0);
-
-		var texture = new THREE.CanvasTexture(ctx.canvas);
-		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
-		var geometry = new THREE.PlaneGeometry( 3, 3 );
-		var plane = new THREE.Mesh( geometry, material );
-		plane.position.y = 1;
-		plane.rotation.x = -Math.PI / 2;
-		this.scene.add( plane );
-
-		this.onRenderFcts.push( (delta) =>{
-		    texture.needsUpdate = true;
-		});					
-
-	},
-	build_test_plane:function() {
-			var cnv = document.createElement('canvas');
-			var ctx = cnv.getContext('2d');
-			// document.body.appendChild(cnv);
-			cnv.width = 256;
-			cnv.height = 256;			
-			ctx.fillStyle = '#FF00FF';
-			ctx.fillRect(0, 0, cnv.width, cnv.height);		
-			var texture = new THREE.CanvasTexture(ctx.canvas);
-			var material = new THREE.MeshBasicMaterial({map: texture,opacity: .8});
-			var geometry = new THREE.PlaneGeometry( 1, 1 );
-			var plane = new THREE.Mesh( geometry, material );			
-			plane.rotation.x = -Math.PI / 2;
-			this.scene.add( plane );			
-	},
-	build_test_animation:function() {
+	build_test:function() {
 
 		// ANIMATION TEXTURE
 
@@ -193,7 +129,8 @@ var Site = {
 	toolkit_init_context:function(){
 			this.arToolkitContext = new THREEx.ArToolkitContext({
 				cameraParametersUrl: THREEx.ArToolkitContext.baseURL + 'data/camera_para.dat',
-				detectionMode: 'mono'
+				detectionMode: 'mono',
+				// labelingMode: 'white_region',
 			});
 			
 			this.arToolkitContext.init(() => { 
@@ -205,8 +142,9 @@ var Site = {
 			});
 			
 			this.arMarkerControls = new THREEx.ArMarkerControls(this.arToolkitContext, this.camera, {
-				type: 'pattern',
-				patternUrl: THREEx.ArToolkitContext.baseURL + 'data/patt.hiro',
+				type: 'pattern',				
+				patternUrl: THREEx.ArToolkitContext.baseURL + 'data/pattern-marker-vsz-2.patt',
+				// patternUrl: THREEx.ArToolkitContext.baseURL + 'data/patt.hiro',
 				// patternUrl : THREEx.ArToolkitContext.baseURL + 'data/patt.kanji',
 				// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 				changeMatrixMode: 'cameraTransformMatrix'
