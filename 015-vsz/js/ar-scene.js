@@ -47,7 +47,7 @@ var AR_SCENE = {
 			alpha: true
 		});
 		this.renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-		// this.renderer.setPixelRatio( window.devicePixelRatio );
+		this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		this.renderer.domElement.style.position = 'absolute'
 		this.renderer.domElement.style.top = '0px'
