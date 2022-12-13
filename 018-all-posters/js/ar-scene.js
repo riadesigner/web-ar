@@ -20,9 +20,9 @@ var AR_SCENE = {
 	},
 	show_loader:function(markerRoot,opt){
 		var options = {
-			scale:.5,			
-			posZ:.5,
-			speed:0.01,
+			scale:1,			
+			posZ:1,
+			speed:0.05,
 		};
 		if(opt){ for (i in opt){options[i]=opt[i]; }}
 		var canvas = document.createElement('canvas');

@@ -17,76 +17,55 @@ html,body{
 	width:100%;
 	overflow: hidden;
 }
-#ajax-loader{
-	position: absolute;top:0;left:0;width: 100%;height: 100%;
-	background: rgba(0,0,0,.4);
-	display: none;
-}
-#ajax-loader div{
-	position: absolute;top:50%;left:50%;width: 50px;height: 50px;
-	background: red;
-	transform: translate(-50%,-50%);
-	animation:1s ani linear infinite; 	
-}
-@keyframes ani{
-	100%{transform:translate(-50%,-50%) rotateZ(359deg);}
-}
 
 </style>
 
 <body>
 
-<div id='ajax-loader'><div></div></div>
-
 <script>
 		
-console.log("hello!")
-
-
-
-var loader = {
-	init:function() {
-		this.div = document.getElementById('ajax-loader'); 
-		console.log('this.div',this.div)
-		// this.hide();
-	},
-	show:function(){
-		this.div.display='block';
-	},
-	hide:function(){
-		this.div.display='none';
-	}
-};
-// loader.init();
-// loader.show();
-
 
 AR_SCENE.init();
 
-// AR_SCENE.add_to('patt.kanji',(root,markerRoot)=>{
+AR_SCENE.add_to('pattern-vsz-m.patt',(root,markerRoot)=>{
 	
-// 	// GIF AS TEXTURE
+	var loader = root.show_loader(markerRoot,{scale:1.3,posZ:2});
+
+	var loader2 = root.show_loader(markerRoot,{scale:1,posZ:2.4});
+
+	// GIF AS TEXTURE
 	
+	var gif = new SuperGif({ src: "./images/rub_test.gif",hidden:true } );		
 
-// 	var gif = new SuperGif({ src: "./images/rub_test.gif",hidden:true } );		
-// 	gif.load((gif,canvas)=>{
-				
-// 		var texture = new THREE.CanvasTexture(canvas);
-// 		var material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, opacity:.8 });
-		
-// 		root.onRenderFcts.push( (delta) =>{
-// 		    texture.needsUpdate = true;
-// 		});		
-		
-// 		var geometry = new THREE.PlaneGeometry( 2, 2 );
-// 		var plane = new THREE.Mesh( geometry, material );
-// 		plane.rotation.x = -Math.PI / 2;
+	var foo = {
+		add_layer:function() {
 
-// 		markerRoot.add( plane );	
+		gif.load((gif,canvas)=>{
+						
+			var texture = new THREE.CanvasTexture(canvas);
+			var material = new THREE.MeshBasicMaterial({ map: texture,transparent: true });
+			
+			root.onRenderFcts.push( (delta) =>{
+			    texture.needsUpdate = true;
+			});		
+			
+			var geometry = new THREE.PlaneGeometry( 2, 2 );
+			var plane = new THREE.Mesh( geometry, material );
 
-// 	});
+			plane.rotation.x = -Math.PI / 2;
+			plane.position.y = 1;
 
-// });
+			markerRoot.add( plane );	
+
+		});			
+
+		}
+	};
+
+	foo.add_layer();
+
+
+});
 
 
 
