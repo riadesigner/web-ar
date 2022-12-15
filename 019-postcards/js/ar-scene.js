@@ -10,69 +10,19 @@ var AR_SCENE = {
 		this.build_scene();
 		this.toolkit_ar_init();
 		this.behaviors();
-		this.loop_animate();
+		this.loop_animate();		
 		mode && mode=='test' && this.build_test();				
 	},
-	add_to:function(patternName,num,foo) {		
+	add_to:function(patternName,num,foo) {				
+
 		this.QUEUE_SETS.push({patternName:patternName,num:num,foo:foo});
 	},
-	hide_loader:function(markerRoot,loader) {
-		markerRoot.remove( loader );	
-	},
-	show_loader:function(markerRoot,opt){
-		var options = {
-			scale:1,			
-			posZ:1,
-			speed:0.05			
-		};
-		if(opt){ for (i in opt){options[i]=opt[i]; }}
-		var canvas = document.createElement('canvas');
-		var ctx = canvas.getContext('2d');
-		canvas.width=256;
-		canvas.height=256;
-		ctx.fillStyle = '#000000';		
-		ctx.beginPath();
-		ctx.arc(canvas.width/2, canvas.height/2, canvas.width/2, 0, Math.PI*2);
-		ctx.fill();
-		ctx.closePath();
-		var ang;
-		var num;
-		var radius = canvas.width/2*.8;		  		
-		ctx.strokeStyle = '#ffffff';
-		ctx.translate(canvas.width/2, canvas.height/2);
-		for(num = 1; num < 13; num++){
-			ang = num * Math.PI / 6;
-			ctx.rotate(ang);
-			ctx.translate(0, -radius * 0.85);
-			ctx.rotate(-ang);		    
-			ctx.beginPath();
-			ctx.lineWidth=4;
-			ctx.arc(0,0, 10, 0, Math.PI*2)
-			ctx.stroke();
-			ctx.closePath();		    
-			ctx.rotate(ang);
-			ctx.translate(0, radius * 0.85);
-			ctx.rotate(-ang);
-		}
-		var texture = new THREE.CanvasTexture(canvas);
-		var material = new THREE.MeshBasicMaterial({ map: texture, opacity:.8,transparent: true });
-		var geometry = new THREE.PlaneGeometry( options.scale, options.scale );
-		var plane = new THREE.Mesh( geometry, material );
-		plane.rotation.x = -Math.PI / 2;
-		plane.position.y = options.posZ;
-		this.onRenderFcts.push( (delta) =>{
-			if(plane) plane.rotation.z +=options.speed;
-		});			
-		
-		markerRoot.add( plane );	
-		
-		return plane;
 
-	},
 	// private
 	add_from_queue:function() {
 		
 		if(!this.arToolkitSource.ready || !this.QUEUE_SETS.length) { return false; }		
+
 		var sets =  this.QUEUE_SETS.shift();
 		if(!sets){ return false; }		
 
@@ -114,7 +64,7 @@ var AR_SCENE = {
 
 		this.onRenderFcts.push( ()=> {
 			for(var i in this.ALL_MARKERS){
-				var m = this.ALL_MARKERS[i];
+				var m = this.ALL_MARKERS[i];				
 				if(m.markerRoot.visible!==m.visible){					
 					m.visible = m.markerRoot.visible;					
 					if(m.visible==true){
@@ -191,8 +141,7 @@ var AR_SCENE = {
 		});
 		this.arToolkitSource.init(function onReady() {
 			_this.arToolkitSource.domElement.addEventListener('canplay', () => {								
-				_this.toolkit_init_context();
-				console.log("--2")
+				_this.toolkit_init_context();				
 				_this.on_resize('fast');							
 			});
 		});		

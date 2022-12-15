@@ -206,7 +206,7 @@ var Site = {
 			
 			this.arMarkerControls = new THREEx.ArMarkerControls(this.arToolkitContext, this.camera, {
 				type: 'pattern',
-				patternUrl: THREEx.ArToolkitContext.baseURL + 'data/patt.hiro',
+				patternUrl: THREEx.ArToolkitContext.baseURL + 'data/patt.kanji',
 				// patternUrl : THREEx.ArToolkitContext.baseURL + 'data/patt.kanji',
 				// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 				changeMatrixMode: 'cameraTransformMatrix'

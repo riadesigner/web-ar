@@ -23,50 +23,6 @@ html,body{
 		
 AR_SCENE.init();
 
-AR_SCENE.add_to('pattern-vsz-m.patt',(root,markerRoot)=>{
-	// ANIMATION TEXTURE
-
-	var canvas = document.createElement('canvas');
-	var ctx = canvas.getContext('2d');		
-	ctx.canvas.width = 256;
-	ctx.canvas.height = 256;
-	ctx.fillStyle = '#FF0000';
-	ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);		
-	var texture = new THREE.CanvasTexture(ctx.canvas);
-	var material = new THREE.MeshBasicMaterial({
-	  // map: loader.load('resources/images/wall.jpg'),
-	  map: texture,		
-	  side: THREE.DoubleSide
-	});
-	// document.body.appendChild(canvas);
-
-	root.onRenderFcts.push( (delta) =>{
-		ctx.fillStyle = `#${randInt(0x1000000).toString(16).padStart(6, '0')}`;
-		ctx.strokeStyle = "#000000";
-		ctx.lineWidth = 10;
-		ctx.beginPath();
-	    var x = randInt(256);
-	    var y = randInt(256);
-	    var radius = randInt(10, 64);
-	    ctx.arc(x, y, radius, 0, Math.PI * 2);
-	    ctx.fill();			
-	    ctx.stroke();
-	    texture.needsUpdate = true;
-	    
-
-	});		
-	
-	var geometry = new THREE.PlaneGeometry( 1, 1 );
-	var plane = new THREE.Mesh( geometry, material );
-	plane.rotation.x = -Math.PI / 2;
-
-	
-	markerRoot.add( plane );	
-
-
-});
-
-
 
 AR_SCENE.add_to('patt.kanji',(root,markerRoot)=>{
 	// ANIMATION TEXTURE

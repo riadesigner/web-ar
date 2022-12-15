@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+<script src='libs/three.min.js'></script>
+<script src="libs/ar-threex-ria.js"></script>
+<script src="libs/libgif-ria.js"></script>		
+<script src="libs/wad.js"></script>
+
+<script src="js/ar-scene.js"></script>
+
+
+<style type="text/css">
+	
+*{box-sizing: border-box;}
+html,body{
+	height:100%;
+	width:100%;
+	overflow: hidden;
+}
+
+
+</style>
+
+<body>
+
+<video id='video1' style="visibility:hidden;height: 1px;width:1px;" 
+src="./images/postcard_2/postcard_1.mp4" loop autoplay muted></video>	
+
+<video id='video2' style="visibility:hidden;height: 1px;width:1px;" 
+src="./images/postcard_2/postcard_2.mp4" loop autoplay muted></video>
+
+
+
+<script>
+		
+
+AR_SCENE.init();	
+
+var video2cnv = {
+	get:function(video_id) {
+		  		
+		var cnv = document.createElement('canvas');
+		var ctx = cnv.getContext('2d',{ willReadFrequently: true });
+		cnv.width = 256;
+		cnv.height = 256;			
+		ctx.fillStyle = '#ff0000';
+		ctx.fillRect(0, 0, cnv.width, cnv.height);
+
+		var video  = document.getElementById(video_id);			
+		video.addEventListener('play', function () {
+		    var vid = this; 
+		    (function loop() {
+		        if (!vid.paused && !vid.ended) {
+		            ctx.drawImage(vid, 0, 0,cnv.width,cnv.height);
+		            var  frame = ctx.getImageData(0, 0,cnv.width,cnv.height);            
+		            for(var i =0;i<frame.data.length;i+=4){
+		            	var r = frame.data[i];	
+		            	var g = frame.data[i+1];	
+		            	var b = frame.data[i+2];	            	
+		            	if(r<30 & g<30 & b<30){
+		            		frame.data[i] = 30;
+		            		frame.data[i+1] = 30;
+		            		frame.data[i+2] = 30;
+							// frame.data[i+3] = 0 // alpha
+		            	}		            
+		            }
+		            ctx.putImageData(frame,0,0);		            
+		            requestAnimationFrame(loop);			            
+		        }
+		    })();
+		}, 0);
+		return cnv;
+	}
+};
+
+var canvas1 = video2cnv.get('video1');
+
+
+AR_SCENE.add_to('barcode',1,(root,markerRoot)=>{
+
+		var bell = new Wad({source : './snd/music-1.mp3'});		
+
+		document.addEventListener('markerFound',(e)=>{
+			var name = e.detail.marker.name;		
+			if(markerRoot.name==name){		
+				bell.play();
+			}		
+		});
+		document.addEventListener('markerLost',(e)=>{
+			var name = e.detail.marker.name;
+			if(markerRoot.name==name){
+				bell.stop();			
+			}		
+		});		
+
+		var posX = -3.1;
+		var posZ = -1.2;
+
+		var texture = new THREE.CanvasTexture(canvas1);
+		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
+		var geometry = new THREE.PlaneGeometry( 4.2, 3.4 );
+		var plane = new THREE.Mesh( geometry, material );
+		plane.position.x = posX;
+		plane.position.z = posZ;
+		plane.rotation.x = -Math.PI / 2;
+		markerRoot.add( plane );
+
+		root.onRenderFcts.push( (delta) =>{
+		    texture.needsUpdate = true;
+		});	
+
+});
+
+
+var canvas2 = video2cnv.get('video2');
+
+
+AR_SCENE.add_to('barcode',2,(root,markerRoot)=>{
+
+		var bell = new Wad({source : './snd/music-3.mp3'});		
+
+		document.addEventListener('markerFound',(e)=>{
+			var name = e.detail.marker.name;		
+			if(markerRoot.name==name){		
+				bell.play();
+			}		
+		});
+		document.addEventListener('markerLost',(e)=>{
+			var name = e.detail.marker.name;
+			if(markerRoot.name==name){
+				bell.stop();			
+			}		
+		});		
+
+		var posX = -3.1;
+		var posZ = -1.2;
+
+		var texture = new THREE.CanvasTexture(canvas2);
+		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
+		var geometry = new THREE.PlaneGeometry( 4.2, 3.4 );
+		var plane = new THREE.Mesh( geometry, material );
+		plane.position.x = posX;
+		plane.position.z = posZ;
+		plane.rotation.x = -Math.PI / 2;
+		markerRoot.add( plane );
+
+		root.onRenderFcts.push( (delta) =>{
+		    texture.needsUpdate = true;
+		});	
+
+});
+
+
+
+// AR_SCENE.add_to('barcode',2,(root,markerRoot)=>{
+	
+	
+	// VIDEO
+	
+
+	// var bell = new Wad({source : './snd/music-3.mp3'});		
+
+	// document.addEventListener('markerFound',(e)=>{
+	// 	var name = e.detail.marker.name;		
+	// 	if(markerRoot.name==name){		
+	// 		bell.play();
+	// 	}		
+	// });
+	// document.addEventListener('markerLost',(e)=>{
+	// 	var name = e.detail.marker.name;
+	// 	if(markerRoot.name==name){
+	// 		bell.stop();			
+	// 	}		
+	// });	
+
+		// 	var cnv = document.createElement('canvas');
+		// 	var ctx = cnv.getContext('2d',{ willReadFrequently: true });
+		// 	cnv.width = 256;
+		// 	cnv.height = 256;			
+		// 	ctx.fillStyle = '#FF0000';
+		// 	ctx.fillRect(0, 0, cnv.width, cnv.height);
+		// 	document.body.appendChild(cnv);
+
+		// 	var video  = document.getElementById('video');			
+		// 	video.addEventListener('play', function () {
+		// 	    var vid = this; 
+		// 	    (function loop() {
+		// 	        if (!vid.paused && !vid.ended) {
+		// 	            ctx.drawImage(vid, 0, 0,cnv.width,cnv.height);			            
+		// 	            var  frame = ctx.getImageData(0, 0,cnv.width,cnv.height);
+		// 	            for(var i =0;i<frame.data.length;i+=4){
+		// 	            	var r = frame.data[i];	
+		// 	            	var g = frame.data[i+1];	
+		// 	            	var b = frame.data[i+2];	            	
+		// 								if(g>160){											
+		// 							   	frame.data[i+3] = 0;
+		// 							  }
+		// 	            }
+		// 	            ctx.putImageData(frame,0,0);				        
+		// 	            requestAnimationFrame(loop);
+		// 	            // setTimeout(loop, 1000 / 30); // drawing at 30fps
+		// 	        }
+		// 	    })();
+		// 	}, 0);
+
+		// var texture = new THREE.CanvasTexture(ctx.canvas);
+		// var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
+		// var geometry = new THREE.PlaneGeometry( 3, 3 );
+		// var plane = new THREE.Mesh( geometry, material );
+		// plane.position.y = 1;
+		// plane.rotation.x = -Math.PI / 2;
+		// root.scene.add( plane );
+
+		// root.onRenderFcts.push( (delta) =>{
+		//     texture.needsUpdate = true;
+		// });		
+
+	
+
+// });
+
+
+
+
+
+</script>
+</body>

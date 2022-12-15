@@ -4,9 +4,9 @@
 <script src='libs/three.min.js'></script>
 <script src="libs/ar-threex-ria.js"></script>
 <script src="libs/libgif-ria.js"></script>		
+<script src="libs/wad.js"></script>
 
 <script src="js/ar-scene.js"></script>
-
 
 
 <style type="text/css">
@@ -29,24 +29,38 @@ html,body{
 
 AR_SCENE.init();
 
-AR_SCENE.add_to('patt.kanji',(root,markerRoot)=>{
+AR_SCENE.add_to('barcode',2,(root,markerRoot)=>{
 	
 	
 	// GIF POSTER WITH 3D LAYERS
 	
 	var layers = [
-		{src:'./images/poster2/lay_1.gif',posZ:.1},
-		{src:'./images/poster2/lay_3.gif',posZ:.4},
-		{src:'./images/poster2/lay_4.gif',posZ:.8},
-		{src:'./images/poster2/lay_2.gif',posZ:1.2}
+		{src:'./images/poster2-1/lay_1.gif',posZ:.1},
+		{src:'./images/poster2-1/lay_3.gif',posZ:.4,anim:true},		
+		{src:'./images/poster2-1/lay_2-1.gif',posZ:1.2}
 	];
 
 	var NEED_TO_LOAD = layers;
 
+	var bell = new Wad({source : './snd/music-1.mp3'});		
+
+	document.addEventListener('markerFound',(e)=>{
+		var name = e.detail.marker.name;		
+		if(markerRoot.name==name){
+			bell.play();
+		}		
+	});
+	document.addEventListener('markerLost',(e)=>{
+		var name = e.detail.marker.name;
+		if(markerRoot.name==name){
+			bell.stop();
+		}		
+	});	
+
 	var foo = {
 		build_layer:function(layer) {
 
-			// var loader = root.show_loader(markerRoot,{scale:1,posZ:layer.posZ*1.1+.1});
+		
 			var gif = new SuperGif({ src: layer.src, hidden:true } );
 			
 			setTimeout(()=>{
@@ -54,9 +68,10 @@ AR_SCENE.add_to('patt.kanji',(root,markerRoot)=>{
 				var canvas = gif.get_canvas(); 			
 				var texture = new THREE.CanvasTexture(canvas);
 				var material = new THREE.MeshBasicMaterial({ map: texture,transparent: true });
-				
+			
+
 				root.onRenderFcts.push( (delta) =>{
-				    texture.needsUpdate = true;
+					if(layer.anim){texture.needsUpdate = true;}		
 				});		
 				
 				var geometry = new THREE.PlaneGeometry( 2, 4 );
@@ -89,20 +104,34 @@ AR_SCENE.add_to('patt.kanji',(root,markerRoot)=>{
 });
 
 
-AR_SCENE.add_to('pattern-vsz-m.patt',(root,markerRoot)=>{
+AR_SCENE.add_to('patt.kanji',0,(root,markerRoot)=>{
 	
 	
 	// GIF POSTER WITH 3D LAYERS
 	
 	var layers = [
-		{src:'./images/poster1/lay_1.gif',posZ:.1},
-		{src:'./images/poster1/lay_3.gif',posZ:.4},
-		{src:'./images/poster1/lay_5.gif',posZ:.8},
-		{src:'./images/poster1/lay_4.gif',posZ:1.2},
-		{src:'./images/poster1/lay_2.gif',posZ:1.6}
+		{src:'./images/poster1-1/lay_1.gif',posZ:0},
+		{src:'./images/poster1-1/lay_3.gif',posZ:.5},
+		{src:'./images/poster1-1/lay_4.gif',posZ:1},
+		{src:'./images/poster1-1/lay_2.gif',posZ:1.5,anim:true},		
 	];
 
 	var NEED_TO_LOAD = layers;
+
+	var bell = new Wad({source : './snd/music-2.mp3'});		
+
+	document.addEventListener('markerFound',(e)=>{
+		var name = e.detail.marker.name;		
+		if(markerRoot.name==name){
+			bell.play();
+		}		
+	});
+	document.addEventListener('markerLost',(e)=>{
+		var name = e.detail.marker.name;
+		if(markerRoot.name==name){
+			bell.stop();
+		}		
+	});	
 
 	var foo = {
 		build_layer:function(layer) {
@@ -117,7 +146,7 @@ AR_SCENE.add_to('pattern-vsz-m.patt',(root,markerRoot)=>{
 				var material = new THREE.MeshBasicMaterial({ map: texture,transparent: true });
 				
 				root.onRenderFcts.push( (delta) =>{
-				    texture.needsUpdate = true;
+				    if(layer.anim){texture.needsUpdate = true;}
 				});		
 				
 				var geometry = new THREE.PlaneGeometry( 2, 4 );
@@ -148,65 +177,6 @@ AR_SCENE.add_to('pattern-vsz-m.patt',(root,markerRoot)=>{
 
 
 });
-
-
-// AR_SCENE.add_to('pattern-vsz-m.patt',(root,markerRoot)=>{
-	
-	
-// 	// GIF POSTER WITH 3D LAYERS
-	
-// 	var layers = [
-// 		// {src:'./images/poster1/lay_1.gif',posZ:.1},
-// 		// {src:'./images/poster1/lay_3.gif',posZ:.5},
-// 		// {src:'./images/poster1/lay_5.gif',posZ:1},
-// 		// {src:'./images/poster1/lay_4.gif',posZ:1.5},
-// 		{src:'./images/poster1/lay_2.gif',posZ:2}
-// 	];
-
-// 	var NEED_TO_LOAD = layers;
-
-// 	var foo = {
-// 		build_layer:function(layer) {
-
-// 			var loader = root.show_loader(markerRoot,{scale:1,posZ:layer.posZ*1.1+.1});
-// 			var gif = new SuperGif({ src: layer.src, hidden:false } );
-
-
-// 			gif.load((gif,canvas)=>{
-// 				console.log("full loaded!!!")			
-// 				var texture = new THREE.CanvasTexture(canvas);
-// 				var material = new THREE.MeshBasicMaterial({ map: texture,transparent: true });
-				
-// 				root.onRenderFcts.push( (delta) =>{
-// 				    texture.needsUpdate = true;
-// 				});		
-				
-// 				var geometry = new THREE.PlaneGeometry( 2, 4 );
-// 				var plane = new THREE.Mesh( geometry, material );
-
-// 				plane.rotation.x = -Math.PI / 2;
-// 				plane.position.y = layer.posZ;
-
-// 				markerRoot.add( plane );	
-
-// 				root.hide_loader(markerRoot,loader);
-
-// 			});			
-
-// 			foo.build_all_layers();
-
-// 		},
-// 		build_all_layers:function() {
-// 			var lay = NEED_TO_LOAD.shift();
-// 			lay && foo.build_layer(lay);
-// 		}
-// 	};
-	
-// 	foo.build_all_layers();	
-
-
-// });
-
 
 
 

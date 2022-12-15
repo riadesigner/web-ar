@@ -129,7 +129,9 @@ var Site = {
 	toolkit_init_context:function(){
 			this.arToolkitContext = new THREEx.ArToolkitContext({
 				cameraParametersUrl: THREEx.ArToolkitContext.baseURL + 'data/camera_para.dat',
-				detectionMode: 'mono',
+				detectionMode: 'mono_and_matrix',
+				matrixCodeType: '3x3',
+				patternRatio: 0.5,
 				// labelingMode: 'white_region',
 			});
 			
@@ -142,8 +144,9 @@ var Site = {
 			});
 			
 			this.arMarkerControls = new THREEx.ArMarkerControls(this.arToolkitContext, this.camera, {
-				type: 'pattern',				
-				patternUrl: THREEx.ArToolkitContext.baseURL + 'data/pattern-marker-vsz-2.patt',
+				type: 'barcode',		
+				barcodeValue:2,
+				// patternUrl: THREEx.ArToolkitContext.baseURL + 'data/pattern-marker-vsz-2.patt',
 				// patternUrl: THREEx.ArToolkitContext.baseURL + 'data/patt.hiro',
 				// patternUrl : THREEx.ArToolkitContext.baseURL + 'data/patt.kanji',
 				// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
