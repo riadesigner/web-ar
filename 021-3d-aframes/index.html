@@ -1,0 +1,137 @@
+<!doctype HTML>
+<html>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+
+<script src="js/aframe.min.js"></script>
+<script src="js/aframe-ar.js"></script>
+<script src="js/aframe-gif-shader.min.js"></script>
+<script src="js/wad.js"></script>
+
+<script src="js/aframe-extras.js"></script>
+
+
+<body style="margin: 0px; overflow: hidden;">
+
+
+<script>
+
+  
+let bell1 = new Wad({source : 'snd/snd-1.mp3'});
+let bell2 = new Wad({source : 'snd/snd-7.mp3'});
+let bell3 = new Wad({source : 'snd/snd-8.mp3'});
+
+
+AFRAME.registerComponent('registerevents', {
+    init: function () 
+    {
+        let marker = this.el;
+
+        marker.addEventListener('markerFound', function(e) {
+            var id = e.srcElement.id;
+            if(id==='model-1'){
+                bell1.play();    
+            }else if(id==='model-2'){
+                bell2.play();
+            }else if(id==='model-3'){
+                bell3.play();
+            }        
+        });
+
+        marker.addEventListener('markerLost', function(e) {
+            var id = e.srcElement.id;            
+            if(id==='model-1'){
+                bell1.stop();    
+            }else if(id==='model-2'){
+                bell2.stop();
+            }else if(id==='model-3'){
+                bell3.stop();
+            }        
+        });
+    }
+});    
+
+</script>
+
+
+<script>
+  // AFRAME.registerComponent('draw-canvas', {
+  //   schema: {default: ''},
+  //   init: function () {
+  //       var _this = this;
+  //       this.canvas = document.getElementById(this.data);
+  //       this.canvas.width = 400;
+  //       this.canvas.height = 400;
+  //       this.ctx = this.canvas.getContext('2d');
+  //       var centerX = this.canvas.width/2; 
+  //       var centerY = this.canvas.height/2; 
+
+  //       var radius = 200;                
+  //       function animate(){
+  //         _this.ctx.beginPath();
+  //         _this.ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+  //         _this.ctx.fillStyle = 'green';
+  //         _this.ctx.fill();
+  //         _this.ctx.lineWidth = 5;
+  //         _this.ctx.strokeStyle = '#003300';
+  //         _this.ctx.stroke();
+  //         radius+=2
+  //         if(radius>70)radius=10;          
+  //         setTimeout(animate,100)
+  //       }        
+  //       animate();
+  //   }
+  // });
+</script>
+
+<a-scene embedded vr-mode-ui="enabled: false;" 
+  arjs="debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;" 
+  shadow="type: basic; castShadow: true">
+
+<a-assets>
+  <img id="circle-purple-gif" src="images/circle-purple.gif" />
+  <img id="circle-red-gif" src="images/circle-red.gif" />
+</a-assets>
+
+<a-marker type="barcode" value="1" registerevents id="model-1">        
+    <a-entity light="type: ambient; intensity: .5;"></a-entity>
+    <a-entity light="type: directional;castShadow: true;intensity: .5; shadowCameraVisible: false;" 
+      position="0 40 15 "></a-entity>
+    <a-entity gltf-model="models/sculpt_1.gltf" 
+        shadow="receive: false" scale="0.01 0.01 0.01" animation-mixer position="0 -.2 0">          
+    </a-entity>
+    <a-circle position='0 -.1 0' shadow="receive: true" rotation="-90 0 0" 
+    material="src: #circle-purple-gif;shader:gif; opacity:1"></a-circle>
+</a-marker>
+
+<a-marker type="barcode" value="2" registerevents id="model-2" >
+    <a-entity light="type: ambient; intensity: .5;"></a-entity>
+    <a-entity light="type: directional; castShadow: false; intensity: 1; shadowCameraVisible: false;" 
+      position="0 40 15"></a-entity>            
+    <a-entity gltf-model="models/sculpt_3_tanya.gltf" 
+        shadow="receive: false" scale="0.002 0.002 0.002" animation-mixer position=".55 0 .55">      
+    </a-entity>       
+    <a-circle position='0 -.1 0' shadow="receive: true" rotation="-90 0 0" 
+    material="src: #circle-red-gif;shader:gif; opacity:1"></a-circle>
+</a-marker>
+
+<a-marker type="barcode" value="3" registerevents id="model-3" >
+    <a-entity light="type: ambient; intensity: 1;"></a-entity>
+    <a-entity light="type: directional; castShadow: false; intensity: 2; shadowCameraVisible: false;" 
+      position="0 40 15"></a-entity>            
+    <a-entity gltf-model="models/sculpt_3.gltf" 
+        shadow="receive: false" scale="0.002 0.002 0.002" animation-mixer position="-.4 1.2 0">      
+    </a-entity>       
+    <a-circle position='0 -.1 0' shadow="receive: true" rotation="-90 0 0" 
+    material="src: #circle-red-gif;shader:gif; opacity:1"></a-circle>
+</a-marker>
+
+<a-entity camera></a-entity>
+    
+</a-scene>
+
+
+
+
+</body>
+</html>

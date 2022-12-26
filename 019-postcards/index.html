@@ -20,20 +20,19 @@ html,body{
 
 
 </style>
-
 <body>
 
-<video id='video1' style="visibility:hidden;height: 1px;width:1px;" 
-src="./images/postcard_2/postcard_1.mp4" loop autoplay muted></video>	
-
-<video id='video2' style="visibility:hidden;height: 1px;width:1px;" 
-src="./images/postcard_2/postcard_2.mp4" loop autoplay muted></video>
-
-
+<video id='video1' style="visibility:hidden;height: 1px;width:1px;" src="./video/postcard_1.mp4" loop autoplay muted ></video>	
+<video id='video2' style="visibility:hidden;height: 1px;width:1px;" src="./video/postcard_2.mp4" loop autoplay muted ></video>	
+<video id='video3' style="visibility:hidden;height: 1px;width:1px;" src="./video/postcard_3.mp4" loop autoplay muted ></video>	
+<video id='video4' style="visibility:hidden;height: 1px;width:1px;" src="./video/postcard_4.mp4" loop autoplay muted ></video>	
+<video id='video5' style="visibility:hidden;height: 1px;width:1px;" src="./video/postcard_5.mp4" loop autoplay muted ></video>	
+<video id='video6' style="visibility:hidden;height: 1px;width:1px;" src="./video/postcard_6.mp4" loop autoplay muted ></video>	
+<video id='video7' style="visibility:hidden;height: 1px;width:1px;" src="./video/postcard_7.mp4" loop autoplay muted ></video>	
+<video id='video8' style="visibility:hidden;height: 1px;width:1px;" src="./video/postcard_8.mp4" loop autoplay muted ></video>	
 
 <script>
 		
-
 AR_SCENE.init();	
 
 var video2cnv = {
@@ -43,7 +42,7 @@ var video2cnv = {
 		var ctx = cnv.getContext('2d',{ willReadFrequently: true });
 		cnv.width = 256;
 		cnv.height = 256;			
-		ctx.fillStyle = '#ff0000';
+		ctx.fillStyle = '#000000';
 		ctx.fillRect(0, 0, cnv.width, cnv.height);
 
 		var video  = document.getElementById(video_id);			
@@ -74,21 +73,30 @@ var video2cnv = {
 };
 
 var canvas1 = video2cnv.get('video1');
-
+var canvas2 = video2cnv.get('video2');
+var canvas3 = video2cnv.get('video3');
+var canvas4 = video2cnv.get('video4');
+var canvas5 = video2cnv.get('video5');
+var canvas6 = video2cnv.get('video6');
+var canvas7 = video2cnv.get('video7');
+var canvas8 = video2cnv.get('video8');
 
 AR_SCENE.add_to('barcode',1,(root,markerRoot)=>{
 
-		var bell = new Wad({source : './snd/music-1.mp3'});		
+		var canvas = canvas1;
+		var bell = new Wad({source : './sound/sound_1.mp3'});		
 
 		document.addEventListener('markerFound',(e)=>{
 			var name = e.detail.marker.name;		
 			if(markerRoot.name==name){		
+				console.log("play",name)
 				bell.play();
 			}		
 		});
 		document.addEventListener('markerLost',(e)=>{
 			var name = e.detail.marker.name;
 			if(markerRoot.name==name){
+				console.log("stop",name)
 				bell.stop();			
 			}		
 		});		
@@ -96,7 +104,7 @@ AR_SCENE.add_to('barcode',1,(root,markerRoot)=>{
 		var posX = -3.1;
 		var posZ = -1.2;
 
-		var texture = new THREE.CanvasTexture(canvas1);
+		var texture = new THREE.CanvasTexture(canvas);
 		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
 		var geometry = new THREE.PlaneGeometry( 4.2, 3.4 );
 		var plane = new THREE.Mesh( geometry, material );
@@ -110,24 +118,24 @@ AR_SCENE.add_to('barcode',1,(root,markerRoot)=>{
 		});	
 
 });
-
-
-var canvas2 = video2cnv.get('video2');
 
 
 AR_SCENE.add_to('barcode',2,(root,markerRoot)=>{
 
-		var bell = new Wad({source : './snd/music-3.mp3'});		
+		var canvas = canvas2;
+		var bell = new Wad({source : './sound/sound_2.mp3'});		
 
 		document.addEventListener('markerFound',(e)=>{
 			var name = e.detail.marker.name;		
-			if(markerRoot.name==name){		
+			if(markerRoot.name==name){
+				console.log("play",name)		
 				bell.play();
 			}		
 		});
 		document.addEventListener('markerLost',(e)=>{
 			var name = e.detail.marker.name;
 			if(markerRoot.name==name){
+				console.log("stop",name)
 				bell.stop();			
 			}		
 		});		
@@ -135,7 +143,7 @@ AR_SCENE.add_to('barcode',2,(root,markerRoot)=>{
 		var posX = -3.1;
 		var posZ = -1.2;
 
-		var texture = new THREE.CanvasTexture(canvas2);
+		var texture = new THREE.CanvasTexture(canvas);
 		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
 		var geometry = new THREE.PlaneGeometry( 4.2, 3.4 );
 		var plane = new THREE.Mesh( geometry, material );
@@ -151,75 +159,236 @@ AR_SCENE.add_to('barcode',2,(root,markerRoot)=>{
 });
 
 
+AR_SCENE.add_to('barcode',3,(root,markerRoot)=>{
 
-// AR_SCENE.add_to('barcode',2,(root,markerRoot)=>{
-	
-	
-	// VIDEO
-	
+		var canvas = canvas3;
+		var bell = new Wad({source : './sound/sound_3.mp3'});		
 
-	// var bell = new Wad({source : './snd/music-3.mp3'});		
+		document.addEventListener('markerFound',(e)=>{
+			var name = e.detail.marker.name;		
+			if(markerRoot.name==name){
+				console.log("play",name)		
+				bell.play();
+			}		
+		});
+		document.addEventListener('markerLost',(e)=>{
+			var name = e.detail.marker.name;
+			if(markerRoot.name==name){
+				console.log("stop",name)
+				bell.stop();			
+			}		
+		});		
 
-	// document.addEventListener('markerFound',(e)=>{
-	// 	var name = e.detail.marker.name;		
-	// 	if(markerRoot.name==name){		
-	// 		bell.play();
-	// 	}		
-	// });
-	// document.addEventListener('markerLost',(e)=>{
-	// 	var name = e.detail.marker.name;
-	// 	if(markerRoot.name==name){
-	// 		bell.stop();			
-	// 	}		
-	// });	
+		var posX = -3.1;
+		var posZ = -1.2;
 
-		// 	var cnv = document.createElement('canvas');
-		// 	var ctx = cnv.getContext('2d',{ willReadFrequently: true });
-		// 	cnv.width = 256;
-		// 	cnv.height = 256;			
-		// 	ctx.fillStyle = '#FF0000';
-		// 	ctx.fillRect(0, 0, cnv.width, cnv.height);
-		// 	document.body.appendChild(cnv);
+		var texture = new THREE.CanvasTexture(canvas);
+		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
+		var geometry = new THREE.PlaneGeometry( 4.2, 3.4 );
+		var plane = new THREE.Mesh( geometry, material );
+		plane.position.x = posX;
+		plane.position.z = posZ;
+		plane.rotation.x = -Math.PI / 2;
+		markerRoot.add( plane );
 
-		// 	var video  = document.getElementById('video');			
-		// 	video.addEventListener('play', function () {
-		// 	    var vid = this; 
-		// 	    (function loop() {
-		// 	        if (!vid.paused && !vid.ended) {
-		// 	            ctx.drawImage(vid, 0, 0,cnv.width,cnv.height);			            
-		// 	            var  frame = ctx.getImageData(0, 0,cnv.width,cnv.height);
-		// 	            for(var i =0;i<frame.data.length;i+=4){
-		// 	            	var r = frame.data[i];	
-		// 	            	var g = frame.data[i+1];	
-		// 	            	var b = frame.data[i+2];	            	
-		// 								if(g>160){											
-		// 							   	frame.data[i+3] = 0;
-		// 							  }
-		// 	            }
-		// 	            ctx.putImageData(frame,0,0);				        
-		// 	            requestAnimationFrame(loop);
-		// 	            // setTimeout(loop, 1000 / 30); // drawing at 30fps
-		// 	        }
-		// 	    })();
-		// 	}, 0);
+		root.onRenderFcts.push( (delta) =>{
+		    texture.needsUpdate = true;
+		});	
 
-		// var texture = new THREE.CanvasTexture(ctx.canvas);
-		// var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
-		// var geometry = new THREE.PlaneGeometry( 3, 3 );
-		// var plane = new THREE.Mesh( geometry, material );
-		// plane.position.y = 1;
-		// plane.rotation.x = -Math.PI / 2;
-		// root.scene.add( plane );
+});
 
-		// root.onRenderFcts.push( (delta) =>{
-		//     texture.needsUpdate = true;
-		// });		
+AR_SCENE.add_to('barcode',4,(root,markerRoot)=>{
 
-	
+		var canvas = canvas4;
+		var bell = new Wad({source : './sound/sound_4.mp3'});		
 
-// });
+		document.addEventListener('markerFound',(e)=>{
+			var name = e.detail.marker.name;		
+			if(markerRoot.name==name){
+				console.log("play",name)		
+				bell.play();
+			}		
+		});
+		document.addEventListener('markerLost',(e)=>{
+			var name = e.detail.marker.name;
+			if(markerRoot.name==name){
+				console.log("stop",name)
+				bell.stop();			
+			}		
+		});		
+
+		var posX = -3.1;
+		var posZ = -1.2;
+
+		var texture = new THREE.CanvasTexture(canvas);
+		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
+		var geometry = new THREE.PlaneGeometry( 4.2, 3.4 );
+		var plane = new THREE.Mesh( geometry, material );
+		plane.position.x = posX;
+		plane.position.z = posZ;
+		plane.rotation.x = -Math.PI / 2;
+		markerRoot.add( plane );
+
+		root.onRenderFcts.push( (delta) =>{
+		    texture.needsUpdate = true;
+		});	
+
+});
 
 
+AR_SCENE.add_to('barcode',5,(root,markerRoot)=>{
+
+		var canvas = canvas5;
+		var bell = new Wad({source : './sound/sound_5.mp3'});		
+
+		document.addEventListener('markerFound',(e)=>{
+			var name = e.detail.marker.name;		
+			if(markerRoot.name==name){		
+				console.log("play",name)
+				bell.play();
+			}		
+		});
+		document.addEventListener('markerLost',(e)=>{
+			var name = e.detail.marker.name;
+			if(markerRoot.name==name){
+				console.log("stop",name)
+				bell.stop();			
+			}		
+		});		
+
+		var posX = -3.1;
+		var posZ = -1.2;
+
+		var texture = new THREE.CanvasTexture(canvas);
+		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
+		var geometry = new THREE.PlaneGeometry( 4.2, 3.4 );
+		var plane = new THREE.Mesh( geometry, material );
+		plane.position.x = posX;
+		plane.position.z = posZ;
+		plane.rotation.x = -Math.PI / 2;
+		markerRoot.add( plane );
+
+		root.onRenderFcts.push( (delta) =>{
+		    texture.needsUpdate = true;
+		});	
+
+});
+
+
+AR_SCENE.add_to('barcode',6,(root,markerRoot)=>{
+
+		var canvas = canvas6;
+		var bell = new Wad({source : './sound/sound_6.mp3'});		
+
+		document.addEventListener('markerFound',(e)=>{
+			var name = e.detail.marker.name;		
+			if(markerRoot.name==name){
+				console.log("play",name)		
+				bell.play();
+			}		
+		});
+		document.addEventListener('markerLost',(e)=>{
+			var name = e.detail.marker.name;
+			if(markerRoot.name==name){
+				console.log("stop",name)
+				bell.stop();			
+			}		
+		});		
+
+		var posX = -3.1;
+		var posZ = -1.2;
+
+		var texture = new THREE.CanvasTexture(canvas);
+		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
+		var geometry = new THREE.PlaneGeometry( 4.2, 3.4 );
+		var plane = new THREE.Mesh( geometry, material );
+		plane.position.x = posX;
+		plane.position.z = posZ;
+		plane.rotation.x = -Math.PI / 2;
+		markerRoot.add( plane );
+
+		root.onRenderFcts.push( (delta) =>{
+		    texture.needsUpdate = true;
+		});	
+
+});
+
+
+AR_SCENE.add_to('barcode',7,(root,markerRoot)=>{
+
+		var canvas = canvas7;
+		var bell = new Wad({source : './sound/sound_7.mp3'});		
+
+		document.addEventListener('markerFound',(e)=>{
+			var name = e.detail.marker.name;		
+			if(markerRoot.name==name){
+				console.log("play",name)		
+				bell.play();
+			}		
+		});
+		document.addEventListener('markerLost',(e)=>{
+			var name = e.detail.marker.name;
+			if(markerRoot.name==name){
+				console.log("stop",name)
+				bell.stop();			
+			}		
+		});		
+
+		var posX = -3.1;
+		var posZ = -1.2;
+
+		var texture = new THREE.CanvasTexture(canvas);
+		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
+		var geometry = new THREE.PlaneGeometry( 4.2, 3.4 );
+		var plane = new THREE.Mesh( geometry, material );
+		plane.position.x = posX;
+		plane.position.z = posZ;
+		plane.rotation.x = -Math.PI / 2;
+		markerRoot.add( plane );
+
+		root.onRenderFcts.push( (delta) =>{
+		    texture.needsUpdate = true;
+		});	
+
+});
+
+AR_SCENE.add_to('barcode',8,(root,markerRoot)=>{
+
+		var canvas = canvas8;
+		var bell = new Wad({source : './sound/sound_8.mp3'});		
+
+		document.addEventListener('markerFound',(e)=>{
+			var name = e.detail.marker.name;		
+			if(markerRoot.name==name){
+				console.log("play",name)		
+				bell.play();
+			}		
+		});
+		document.addEventListener('markerLost',(e)=>{
+			var name = e.detail.marker.name;
+			if(markerRoot.name==name){
+				console.log("stop",name)
+				bell.stop();			
+			}		
+		});		
+
+		var posX = -3.1;
+		var posZ = -1.2;
+
+		var texture = new THREE.CanvasTexture(canvas);
+		var material = new THREE.MeshBasicMaterial({map: texture,opacity: 1});
+		var geometry = new THREE.PlaneGeometry( 4.2, 3.4 );
+		var plane = new THREE.Mesh( geometry, material );
+		plane.position.x = posX;
+		plane.position.z = posZ;
+		plane.rotation.x = -Math.PI / 2;
+		markerRoot.add( plane );
+
+		root.onRenderFcts.push( (delta) =>{
+		    texture.needsUpdate = true;
+		});	
+
+});
 
 
 
