@@ -1,0 +1,200 @@
+<!doctype HTML>
+<html>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+
+<script src="js/aframe.min.js"></script>
+<script src="js/aframe-ar.js"></script>
+<script src="js/aframe-gif-shader.min.js"></script>
+<script src="js/wad.js"></script>
+
+<script src="js/aframe-extras.js"></script>
+
+
+<body style="margin: 0px; overflow: hidden;">
+
+
+<a-scene embedded vr-mode-ui="enabled: false;"
+
+  arjs="debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;" 
+  shadow="type: basic; castShadow: true">
+
+<a-assets>
+  <img id="circle-green-gif" src="images/circle-green.gif" />  
+</a-assets>
+
+<a-marker type="pattern" url="data/vsz-home.patt" registerevents id="marker-1"  >
+    <a-entity light="type: ambient; intensity: .6;"></a-entity>
+    <a-entity light="type: directional;castShadow: true;intensity: 1.3; shadowCameraVisible: false;" 
+      position="0 10 10 "></a-entity>
+
+      <!-- group 1 -->
+    <a-entity gltf-model="models/f-01.gltf" id="model-1"
+        shadow="receive: false" scale="0.001 0.001 0.001" 
+        animation="property: position; to: 0 .9 -.6; dur: 800; easing: easeOutQuad; loop: true; delay:100; dir:alternate;"
+        position="0 .4 -.6">
+    </a-entity>
+
+    <a-entity gltf-model="models/f-02.gltf" id="model-2"
+        shadow="receive: false" scale="0.001 0.001 0.001" 
+        animation="property: position; to: 0.5 .6 0; dur: 600; easing: easeOutQuad; loop: true; dir:alternate;"
+        position="0.5 .4 0">
+    </a-entity>
+
+    <a-entity gltf-model="models/f-03.gltf" id="model-3"
+        shadow="receive: false" scale="0.0008 0.0008 0.0008" 
+        animation="property: position; to: -.3 .3 .5; dur: 700; easing: easeOutQuad; loop: true; delay:150; dir:alternate;"
+        position="-.3 .1 .5">
+    </a-entity>    
+    
+    <!-- group 2 -->    
+    <a-entity gltf-model="models/f-04.gltf" id="model-4"
+        shadow="receive: false" scale="0.0012 0.0012 0.0012" 
+        animation="property: position; to: -.2 .3 -.6; dur: 800; easing: easeOutQuad; loop: true; delay:100; dir:alternate;"
+        position="-.2 0 -.6"
+        visible="false">
+    </a-entity>
+
+    <a-entity gltf-model="models/f-05.gltf" id="model-5"
+        shadow="receive: false" scale="0.001 0.001 0.001" 
+        animation="property: position; to: 0.5 .2 0; dur: 600; easing: easeOutQuad; loop: true; dir:alternate;"
+        position="0.5 0 0"
+        visible="false">
+    </a-entity>
+
+    <a-entity gltf-model="models/f-08.gltf" id="model-6"
+        shadow="receive: false" scale="0.0007 0.0007 0.0007" 
+        animation="property: position; to: -.2 .3 .5; dur: 700; easing: easeOutQuad; loop: true; delay:150; dir:alternate;"
+        position="-.2 .1 .5"
+        visible="false">
+    </a-entity>       
+
+    <!-- group 3 -->
+    <a-entity gltf-model="models/f-07.gltf" id="model-7"
+        shadow="receive: false" scale="0.001 0.001 0.001" 
+        animation="property: position; to: 0.3 .3 0; dur: 600; easing: easeOutQuad; loop: true; dir:alternate;"
+        position="0.3 0 0"
+        visible="false">
+    </a-entity>
+
+    <a-entity gltf-model="models/f-06.gltf" id="model-8"
+        shadow="receive: false" scale="0.0008 0.0008 0.0008" 
+        animation="property: position; to: -.3 .2 .5; dur: 700; easing: easeOutQuad; loop: true; delay:150; dir:alternate;"
+        position="-.3 0 .5"
+        visible="false">
+    </a-entity> 
+
+    <!-- group common -->
+    <a-entity gltf-model="models/grass.gltf" scale="0.003 0.003 0.003" position=".6 0 -.4"></a-entity>
+    <a-entity gltf-model="models/grass.gltf" scale="0.005 0.005 0.005" position=".6 0 .4"></a-entity>
+    <a-entity gltf-model="models/grass.gltf" scale="0.003 0.003 0.003" position="-.2 0 .8"></a-entity>
+
+    <a-circle position='0 -.1 0' shadow="receive: true" rotation="-90 0 0" 
+    material="src: #circle-green-gif;shader:gif; opacity:1"></a-circle>
+</a-marker>
+
+<a-entity camera></a-entity>
+    
+</a-scene>
+
+
+<script>
+
+
+var MODELKI = {
+    init:function(current) {
+        this.all_elements = {};
+        this.all_models_group = [
+            ['model-1','model-2','model-3'],
+            ['model-4','model-5','model-6'],
+            ['model-7','model-8']
+        ];        
+        this.sounds = [
+            new Wad({source : 'snd/countryside.mp3'}),
+            new Wad({source : 'snd/frogs.mp3'}),
+            new Wad({source : 'snd/ducks.mp3'})            
+            ];
+
+        this.CURRENT = current||0;
+        this.get_find_all_elements();
+        this.behavior();
+    },
+    next:function() {
+        if(this.CURRENT<this.all_models_group.length-1){
+            this.CURRENT++;            
+        }else{
+            this.CURRENT=0;
+        };
+        this.toggle_3d_models();
+        this.play_the_sound();
+    },
+    sounds_stop:function() {
+        for (var s in this.sounds){
+            this.sounds[s].stop();      
+        }
+    },
+    // private    
+    behavior:function() {
+        document.body.addEventListener('click',()=>{
+            this.next();
+        })
+    },
+    get_find_all_elements:function() {        
+        for (var i in this.all_models_group){
+            var group = this.all_models_group[i];
+            for (var el in group){
+                var el_name = group[el];
+                this.all_elements[el_name] = document.getElementById(el_name);
+            }
+        }
+    },
+    play_the_sound:function() {
+        this.sounds_stop();
+        this.sounds[this.CURRENT].play();
+    },
+    toggle_3d_models:function() {
+        
+        for(var i in this.all_elements){
+            this.all_elements[i].object3D.visible = false;            
+        };
+
+        var  cur_group = this.all_models_group[this.CURRENT];
+        for(var i in cur_group){
+            var al_name = cur_group[i];
+            this.all_elements[al_name].object3D.visible = true;
+        }
+    }
+};
+
+
+MODELKI.init(1);
+
+AFRAME.registerComponent('registerevents', {
+    init: function () 
+    {
+        let marker = this.el;
+
+        marker.addEventListener('markerFound', function(e) {
+            var id = e.srcElement.id;
+            if(id==='marker-1'){                
+                MODELKI.next();
+
+            }       
+        });
+
+        marker.addEventListener('markerLost', function(e) {
+            var id = e.srcElement.id;            
+            if(id==='marker-1'){
+                MODELKI.sounds_stop();                
+            }       
+        });
+    }
+});    
+
+
+</script>
+
+
+
+</body>
+</html>

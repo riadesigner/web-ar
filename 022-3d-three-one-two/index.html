@@ -7,43 +7,6 @@
 <script src="js/wad.js"></script>
 
 
-<script>
-
-
-</script>
-
-
-
-
-<!-- ---------------- Custom Shader Code ------------------------ -->
-<script id="vertexShader" type="x-shader/x-vertex">
-uniform float refractionRatio;
-varying vec3 vRefract;
-void main() 
-{ 
-	vec4 mPosition = modelMatrix * vec4( position, 1.0 );
-	vec3 nWorld = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
-	vRefract = normalize( refract( normalize( mPosition.xyz - cameraPosition ), nWorld, refractionRatio ) );
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-}
-</script>
-
-<script id="fragmentShader" type="x-shader/x-vertex"> 
-uniform sampler2D texture;
-varying vec3 vRefract;
-uniform float distance;
-uniform float opacity;
-uniform vec3 tint;
-void main() 
-{
-	vec2 p = vec2( vRefract.x * distance + 0.5, vRefract.y * distance + 0.5 );
-	p = vec2(1.0, 1.0) - p;
-	vec3 color = texture2D( texture, p ).rgb;
-	gl_FragColor = vec4( color, opacity ) * vec4( tint, 1.0 );
-}  
-</script>
-<!-- ----------------------------------------------------------- -->
-
 
 <style type="text/css">
 	
@@ -242,65 +205,6 @@ AR_SCENE.add_to('barcode',2,(root,markerRoot)=>{
 
 
 });	
-
-AR_SCENE.add_to('barcode',3,(root,markerRoot)=>{
-
-	var bell = new Wad({source : './snd/snd-6.mp3'});		
-
-	document.addEventListener('markerFound',(e)=>{
-		var name = e.detail.marker.name;		
-		if(markerRoot.name==name){
-			console.log("play",name)		
-			bell.play();
-		}		
-	});
-	document.addEventListener('markerLost',(e)=>{
-		var name = e.detail.marker.name;
-		if(markerRoot.name==name){
-			console.log("stop",name)
-			bell.stop();			
-		}		
-	});		
-	
-	////////////////////////////////////////////////////////////
-	// setup scene
-	////////////////////////////////////////////////////////////
-	var loader = new THREE.TextureLoader();
-	
-	var videoTexture = new THREE.VideoTexture( root.arToolkitSource.domElement );
-	videoTexture.minFilter = THREE.LinearFilter;
-	
-	var refractMaterial = new THREE.ShaderMaterial({
-		uniforms: {
-			texture: { value: videoTexture },
-			refractionRatio: { value: 0.75 },
-			distance: { value: 1.0 },
-			opacity: { value: 0.8 },
-			tint: { value: new THREE.Vector3(0.8, 0.8, 1.0) }
-		},
-		vertexShader: document.getElementById( 'vertexShader' ).textContent,
-		fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
-		transparent: true
-	});
-	
-	var reflectMesh = new THREE.Mesh( 
-		new THREE.TorusKnotGeometry(0.5, 0.2, 128, 16), // new THREE.SphereBufferGeometry(1, 32, 32), 		
-		refractMaterial 
-	);
-	
-	reflectMesh.position.y = 1;
-		
-	root.onRenderFcts.push( (delta,totalTime) =>{
-
-		reflectMesh.rotation.y -= 0.01;
-	
-	});
-
-	markerRoot.add( reflectMesh );
-
-
-});	
-
 
 
 
